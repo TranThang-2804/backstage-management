@@ -94,7 +94,6 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-    <Route path="/terraform-portal" element={<TerraformPortalPage />} />
     <Route path="/infra-self-service-portal" element={<InfraSelfServicePortalPage />} />
   </FlatRoutes>
 );

@@ -1,11 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableColumn, Progress, ResponseErrorPanel } from '@backstage/core-components';
+import { DetailInputModal } from './DetailInputModal';
 import useAsync from 'react-use/lib/useAsync';
-
-import {
-  Button,
-} from "@mui/material";
 
 export const serviceList = {
   "results": [
@@ -42,6 +39,11 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
     { title: '', field: 'button' },
   ];
 
+  const handleCreateService = (name: string) => {
+    <DetailInputModal />
+    return name;
+  }
+
   const data = services.map(service => {
     return {
       image: (
@@ -53,15 +55,15 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
       ),
       name: `${service.name}`,
       button:
-        <Button
+        <button
           type="submit"
-          color="orangeFake"
-          variant="contained"
-          onClick={signin}
-          fullWidth
+          // color="orangeFake"
+          // variant="contained"
+          onClick={() => { handleCreateService(service.name) }}
+        // fullWidth
         >
-          Sign in
-        </Button>
+          Create
+        </button>
     };
   });
 
