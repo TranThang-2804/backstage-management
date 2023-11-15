@@ -3,19 +3,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableColumn, Progress, ResponseErrorPanel } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
 
+import {
+  Button,
+} from "@mui/material";
+
 export const serviceList = {
   "results": [
     {
       "name": "S3",
-      "picture": "../../../asset/images/s3.png",
+      "picture": "../../../asset/images/S3.png",
     }
   ]
 }
 
 const useStyles = makeStyles({
   avatar: {
-    height: 32,
-    width: 32,
+    height: 42,
+    width: 42,
     borderRadius: '50%',
   },
 });
@@ -35,11 +39,12 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
   const columns: TableColumn[] = [
     { title: 'icon', field: 'image' },
     { title: 'Name', field: 'name' },
+    { title: '', field: 'button' },
   ];
 
   const data = services.map(service => {
     return {
-      avatar: (
+      image: (
         <img
           src={service.picture}
           className={classes.avatar}
@@ -47,12 +52,22 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
         />
       ),
       name: `${service.name}`,
+      button:
+        <Button
+          type="submit"
+          color="orangeFake"
+          variant="contained"
+          onClick={signin}
+          fullWidth
+        >
+          Sign in
+        </Button>
     };
   });
 
   return (
     <Table
-      title="Example User List"
+      title="Infra Service List"
       options={{ search: false, paging: false }}
       columns={columns}
       data={data}
