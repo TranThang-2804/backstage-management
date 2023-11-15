@@ -9,7 +9,7 @@ import {
   HeaderLabel,
   SupportButton,
 } from '@backstage/core-components';
-import { ExampleFetchComponent } from '../ExampleFetchComponent';
+import { InfraOptionList } from '../InfraOptionList';
 
 export const MainPage = () => (
   <Page themeId="tool">
@@ -30,7 +30,7 @@ export const MainPage = () => (
           </InfoCard>
         </Grid>
         <Grid item>
-          <ExampleFetchComponent />
+          <InfraOptionList />
         </Grid>
       </Grid>
     </Content>
