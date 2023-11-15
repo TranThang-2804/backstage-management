@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 type Service = {
   name: string;
-  picture: string; // "https://api.dicebear.com/6.x/open-peeps/svg?seed=Duane"
+  picture: string;
 };
 
 type DenseTableProps = {

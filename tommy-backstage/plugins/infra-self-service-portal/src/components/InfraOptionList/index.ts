@@ -1,2 +1,2 @@
 export { InfraOptionList } from './InfraOptionListComponent';
-export { DetailInputModal } from './DetailInputModal';
+// export { DetailInputModal } from './DetailInputModal';

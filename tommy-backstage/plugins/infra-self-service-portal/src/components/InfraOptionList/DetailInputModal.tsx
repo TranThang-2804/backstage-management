@@ -38,6 +38,7 @@ export const DetailInputModal = () => {
     closeModal(); // Close the modal after submission
   };
 
+  console.log('hi')
   return (
     <div>
       <Modal
