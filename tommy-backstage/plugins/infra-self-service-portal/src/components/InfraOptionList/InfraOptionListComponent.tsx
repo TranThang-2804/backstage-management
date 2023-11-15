@@ -3,18 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableColumn, Progress, ResponseErrorPanel } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
 
-export const exampleUsers = {
+export const serviceList = {
   "results": [
     {
-      "gender": "male",
-      "name": {
-        "title": "Mr",
-        "first": "Valgi",
-        "last": "da Cunha"
-      },
-      "email": "valgi.dacunha@example.com",
-      "picture": "https://api.dicebear.com/6.x/open-peeps/svg?seed=Valgi",
-      "nat": "BR"
+      "name": "S3",
+      "picture": "../../../asset/images/s3.png",
     }
   ]
 }
@@ -27,44 +20,33 @@ const useStyles = makeStyles({
   },
 });
 
-type User = {
-  gender: string; // "male"
-  name: {
-    title: string; // "Mr",
-    first: string; // "Duane",
-    last: string; // "Reed"
-  };
-  email: string; // "duane.reed@example.com"
+type Service = {
+  name: string;
   picture: string; // "https://api.dicebear.com/6.x/open-peeps/svg?seed=Duane"
-  nat: string; // "AU"
 };
 
 type DenseTableProps = {
-  users: User[];
+  services: Service[];
 };
 
-export const DenseTable = ({ users }: DenseTableProps) => {
+export const DenseTable = ({ services: services }: DenseTableProps) => {
   const classes = useStyles();
 
   const columns: TableColumn[] = [
-    { title: 'Avatar', field: 'avatar' },
+    { title: 'icon', field: 'image' },
     { title: 'Name', field: 'name' },
-    { title: 'Email', field: 'email' },
-    { title: 'Nationality', field: 'nationality' },
   ];
 
-  const data = users.map(user => {
+  const data = services.map(service => {
     return {
       avatar: (
         <img
-          src={user.picture}
+          src={service.picture}
           className={classes.avatar}
-          alt={user.name.first}
+          alt={service.name}
         />
       ),
-      name: `${user.name.first} ${user.name.last}`,
-      email: user.email,
-      nationality: user.nat,
+      name: `${service.name}`,
     };
   });
 
@@ -80,9 +62,9 @@ export const DenseTable = ({ users }: DenseTableProps) => {
 
 export const InfraOptionList = () => {
 
-  const { value, loading, error } = useAsync(async (): Promise<User[]> => {
+  const { value, loading, error } = useAsync(async (): Promise<Service[]> => {
     // Would use fetch in a real world example
-    return exampleUsers.results;
+    return serviceList.results;
   }, []);
 
   if (loading) {
@@ -91,5 +73,5 @@ export const InfraOptionList = () => {
     return <ResponseErrorPanel error={error} />;
   }
 
-  return <DenseTable users={value || []} />;
+  return <DenseTable services={value || []} />;
 };
