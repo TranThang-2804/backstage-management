@@ -1,0 +1,1487 @@
+{
+  "schemas": [
+    {
+      "value": {
+        "$schema": "https://backstage.io/schema/config-v1",
+        "title": "@backstage/cli",
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "object",
+            "properties": {
+              "baseUrl": {
+                "type": "string",
+                "visibility": "frontend"
+              },
+              "title": {
+                "type": "string",
+                "visibility": "frontend"
+              },
+              "datadogRum": {
+                "type": "object",
+                "description": "Datadog RUM events configuration",
+                "properties": {
+                  "env": {
+                    "type": "string",
+                    "visibility": "frontend",
+                    "description": "Environment for Datadog RUM events"
+                  },
+                  "clientToken": {
+                    "type": "string",
+                    "visibility": "frontend",
+                    "description": "clientToken for Datadog RUM events"
+                  },
+                  "applicationId": {
+                    "type": "string",
+                    "visibility": "frontend",
+                    "description": "applicationId for Datadog RUM events"
+                  },
+                  "site": {
+                    "type": "string",
+                    "visibility": "frontend",
+                    "description": "site for Datadog RUM events"
+                  }
+                },
+                "required": [
+                  "clientToken",
+                  "applicationId"
+                ]
+              },
+              "listen": {
+                "type": "object",
+                "description": "Listening configuration for local development",
+                "properties": {
+                  "host": {
+                    "type": "string",
+                    "visibility": "frontend",
+                    "description": "The host that the frontend should be bound to. Only used for local development."
+                  },
+                  "port": {
+                    "type": "number",
+                    "visibility": "frontend",
+                    "description": "The port that the frontend should be bound to. Only used for local development."
+                  }
+                }
+              },
+              "https": {
+                "type": "object",
+                "description": "Only used for local development. The https object is passed to webpack in order to enable using https on localhost.",
+                "properties": {
+                  "certificate": {
+                    "type": "object",
+                    "description": "Parent object containing certificate and the private key",
+                    "required": [
+                      "key",
+                      "cert"
+                    ],
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "visibility": "secret",
+                        "description": "Https Certificate private key. Use $file to load in a file"
+                      },
+                      "cert": {
+                        "type": "string",
+                        "visibility": "secret",
+                        "description": "Https Certificate. Use $file to load in a file"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "path": "../../node_modules/@backstage/cli/package.json"
+    },
+    {
+      "value": {
+        "$schema": "https://backstage.io/schema/config-v1",
+        "title": "@backstage/user-settings",
+        "type": "object",
+        "properties": {
+          "auth": {
+            "type": "object",
+            "properties": {
+              "providers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "visibility": "frontend",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "path": "../../node_modules/@backstage/plugin-user-settings/package.json"
+    },
+    {
+      "path": "../../node_modules/@backstage/core-app-api/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "description": "Generic frontend configuration.",
+            "type": "object",
+            "properties": {
+              "baseUrl": {
+                "description": "The public absolute root URL that the frontend.",
+                "visibility": "frontend",
+                "type": "string"
+              },
+              "title": {
+                "description": "The title of the app, as shown in the Backstage web interface.",
+                "visibility": "frontend",
+                "type": "string"
+              },
+              "support": {
+                "description": "Information about support of this Backstage instance and how to contact the integrator team.",
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "description": "The primary support url.",
+                    "visibility": "frontend",
+                    "type": "string"
+                  },
+                  "items": {
+                    "description": "A list of categorized support item groupings.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "description": "The title of the support item grouping.",
+                          "visibility": "frontend",
+                          "type": "string"
+                        },
+                        "icon": {
+                          "description": "An optional icon for the support item grouping.",
+                          "visibility": "frontend",
+                          "type": "string"
+                        },
+                        "links": {
+                          "description": "A list of support links for the Backstage instance inside this grouping.",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "visibility": "frontend",
+                                "type": "string"
+                              },
+                              "title": {
+                                "visibility": "frontend",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "url"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "links",
+                        "title"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "items",
+                  "url"
+                ]
+              }
+            },
+            "required": [
+              "baseUrl"
+            ]
+          },
+          "backend": {
+            "description": "Generic backend configuration.",
+            "type": "object",
+            "properties": {
+              "baseUrl": {
+                "description": "The public absolute root URL that the backend is reachable at, from the browser's perspective.",
+                "visibility": "frontend",
+                "type": "string"
+              }
+            },
+            "required": [
+              "baseUrl"
+            ]
+          },
+          "organization": {
+            "description": "Configuration that provides information about the organization that the app is for.",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the organization that the app belongs to.",
+                "visibility": "frontend",
+                "type": "string"
+              }
+            }
+          },
+          "homepage": {
+            "description": "This config was used by the HomepageTimer but has been replaced  by the HeaderWorldClock in the home plugin",
+            "deprecated": "in favor of the HeaderWorldClock which is found in the home plugin",
+            "type": "object",
+            "properties": {
+              "clocks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "visibility": "frontend",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "timezone"
+                  ]
+                }
+              }
+            }
+          },
+          "auth": {
+            "description": "Configuration that provides information on available configured authentication providers.",
+            "type": "object",
+            "properties": {
+              "environment": {
+                "description": "The 'environment' attribute added as an optional parameter to have configurable environment value for `auth.providers`.\ndefault value: 'development'\noptional values: 'development' | 'production'",
+                "visibility": "frontend",
+                "type": "string"
+              }
+            }
+          },
+          "enableExperimentalRedirectFlow": {
+            "description": "Enable redirect authentication flow type, instead of a popup for authentication.",
+            "visibility": "frontend",
+            "type": "boolean"
+          },
+          "discovery": {
+            "description": "Discovery options.",
+            "visibility": "frontend",
+            "type": "object",
+            "properties": {
+              "endpoints": {
+                "description": "Endpoints\n\nA list of target baseUrls and the associated plugins.",
+                "visibility": "frontend",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "description": "The target baseUrl to use for the plugin\n\nCan be either a string or an object with internal and external keys. (Internal is used for the backend, external for the frontend)\nTargets with `{{pluginId}}` or `{{ pluginId }} in the url will be replaced with the pluginId.",
+                      "visibility": "frontend",
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "external": {
+                              "visibility": "frontend",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "external"
+                          ]
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "plugins": {
+                      "description": "Array of plugins which use the target baseUrl.",
+                      "visibility": "frontend",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "plugins",
+                    "target"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "app",
+          "backend"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/core-components/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "auth": {
+            "type": "object",
+            "properties": {
+              "autologout": {
+                "description": "Autologout feature configuration",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "description": "Enable or disable the autologout feature",
+                    "visibility": "frontend",
+                    "type": "boolean"
+                  },
+                  "idleTimeoutMinutes": {
+                    "description": "Number of minutes after which the inactive user is logged out automatically.\nDefault is 60 minutes (1 hour)",
+                    "visibility": "frontend",
+                    "type": "number"
+                  },
+                  "promptBeforeIdleSeconds": {
+                    "description": "Number of seconds before the idle timeout where the user will be asked if it's still active.\nA dialog will be shown.\nDefault is 10 seconds.\nSet to 0 seconds to disable the prompt.",
+                    "visibility": "frontend",
+                    "type": "number"
+                  },
+                  "useWorkerTimers": {
+                    "description": "Enable/disable the usage of worker thread timers instead of main thread timers.\nDefault is true.\nIf you experience some browser incompatibility, you may try to set this to false.",
+                    "visibility": "frontend",
+                    "type": "boolean"
+                  },
+                  "logoutIfDisconnected": {
+                    "description": "Enable/disable the automatic logout also on users that are logged in but with no Backstage tabs open.\nDefault is true.",
+                    "visibility": "frontend",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/plugin-catalog-import/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "catalog": {
+            "description": "Configuration options for the catalog plugin.",
+            "type": "object",
+            "properties": {
+              "import": {
+                "description": "List of import flow specific options and attributes",
+                "type": "object",
+                "properties": {
+                  "entityFilename": {
+                    "description": "Catalog entity descriptor filename, defaults to \"catalog-info.yaml\"",
+                    "visibility": "frontend",
+                    "type": "string"
+                  },
+                  "pullRequestBranchName": {
+                    "description": "A branch name used in pull request when registering existing component via UI\nValid git refname required, see: https://git-scm.com/docs/git-check-ref-format\nDefaults to \"backstage-integration\"",
+                    "visibility": "frontend",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/plugin-search/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "description": "Configuration options for the search plugin",
+            "type": "object",
+            "properties": {
+              "query": {
+                "description": "An object representing the default search query configuration.\nBy configuring and modifying the values of this object,\nyou can customize the default values of the search queries\nand define how it behaves by default.",
+                "type": "object",
+                "properties": {
+                  "pageLimit": {
+                    "description": "A number indicating the maximum number of results to be returned\nper page during pagination.",
+                    "visibility": "frontend",
+                    "enum": [
+                      10,
+                      100,
+                      25,
+                      50
+                    ],
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/plugin-techdocs/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "techdocs": {
+            "description": "Configuration options for the techdocs plugin",
+            "type": "object",
+            "properties": {
+              "builder": {
+                "description": "Documentation building process depends on the builder attr",
+                "visibility": "frontend",
+                "enum": [
+                  "external",
+                  "local"
+                ],
+                "type": "string"
+              },
+              "legacyUseCaseSensitiveTripletPaths": {
+                "description": "Allows fallback to case-sensitive triplets in case of migration issues.",
+                "visibility": "frontend",
+                "type": "boolean"
+              },
+              "sanitizer": {
+                "type": "object",
+                "properties": {
+                  "allowedIframeHosts": {
+                    "description": "Allows iframe tag only for listed hosts\nExample:\n allowedIframeHosts: [\"example.com\"]\n this will allow all iframes with the host `example.com` in the src attribute",
+                    "visibility": "frontend",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "builder"
+            ]
+          }
+        },
+        "required": [
+          "techdocs"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/integration/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "integrations": {
+            "description": "Configuration for integrations towards various external repository provider systems",
+            "visibility": "frontend",
+            "type": "object",
+            "properties": {
+              "azure": {
+                "description": "Integration configuration for Azure",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given Azure instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "token": {
+                      "description": "Token used to authenticate requests.",
+                      "visibility": "secret",
+                      "deprecated": "Use `credentials` instead.",
+                      "type": "string"
+                    },
+                    "credential": {
+                      "description": "The credential to use for requests.\n\nIf no credential is specified anonymous access is used.",
+                      "deepVisibility": "secret",
+                      "deprecated": "Use `credentials` instead.",
+                      "type": "object",
+                      "properties": {
+                        "clientId": {
+                          "type": "string"
+                        },
+                        "clientSecret": {
+                          "type": "string"
+                        },
+                        "tenantId": {
+                          "type": "string"
+                        },
+                        "personalAccessToken": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "credentials": {
+                      "description": "The credentials to use for requests. If multiple credentials are specified the first one that matches the organization is used.\nIf not organization matches the first credential without an organization is used.\n\nIf no credentials are specified at all, either a default credential (for Azure DevOps) or anonymous access (for Azure DevOps Server) is used.",
+                      "deepVisibility": "secret",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "clientId": {
+                            "type": "string"
+                          },
+                          "clientSecret": {
+                            "type": "string"
+                          },
+                          "tenantId": {
+                            "type": "string"
+                          },
+                          "personalAccessToken": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "bitbucket": {
+                "description": "Integration configuration for Bitbucket",
+                "deprecated": "replaced by bitbucketCloud and bitbucketServer",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given Bitbucket instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "token": {
+                      "description": "Token used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "apiBaseUrl": {
+                      "description": "The base url for the Bitbucket API, for example https://api.bitbucket.org/2.0",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "username": {
+                      "description": "The username to use for authenticated requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "appPassword": {
+                      "description": "Bitbucket app password used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "bitbucketCloud": {
+                "description": "Integration configuration for Bitbucket Cloud",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "description": "The username to use for authenticated requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "appPassword": {
+                      "description": "Bitbucket Cloud app password used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "appPassword",
+                    "username"
+                  ]
+                }
+              },
+              "bitbucketServer": {
+                "description": "Integration configuration for Bitbucket Server",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given Bitbucket Server instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "token": {
+                      "description": "Token used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "username": {
+                      "description": "Username used to authenticate requests with Basic Auth.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "password": {
+                      "description": "Password (or token as password) used to authenticate requests with Basic Auth.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "apiBaseUrl": {
+                      "description": "The base url for the Bitbucket Server API, for example https://<host>/rest/api/1.0",
+                      "visibility": "frontend",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "gerrit": {
+                "description": "Integration configuration for Gerrit",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given Gerrit instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "baseUrl": {
+                      "description": "The base url for the Gerrit instance.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "cloneUrl": {
+                      "description": "The base url for cloning repos.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "username": {
+                      "description": "The username to use for authenticated requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "password": {
+                      "description": "Gerrit password used to authenticate requests. This can be either a password\nor a generated access token.",
+                      "visibility": "secret",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "github": {
+                "description": "Integration configuration for GitHub",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given GitHub instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "token": {
+                      "description": "Token used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "apiBaseUrl": {
+                      "description": "The base url for the GitHub API, for example https://api.github.com",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "rawBaseUrl": {
+                      "description": "The base url for GitHub raw resources, for example https://raw.githubusercontent.com",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "apps": {
+                      "description": "GitHub Apps configuration",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appId": {
+                            "description": "The numeric GitHub App ID, string for environment variables",
+                            "type": [
+                              "string",
+                              "number"
+                            ]
+                          },
+                          "privateKey": {
+                            "description": "The private key to use for auth against the app",
+                            "visibility": "secret",
+                            "type": "string"
+                          },
+                          "webhookSecret": {
+                            "description": "The secret used for webhooks",
+                            "visibility": "secret",
+                            "type": "string"
+                          },
+                          "clientId": {
+                            "description": "The client ID to use",
+                            "type": "string"
+                          },
+                          "clientSecret": {
+                            "description": "The client secret to use",
+                            "visibility": "secret",
+                            "type": "string"
+                          },
+                          "allowedInstallationOwners": {
+                            "description": "List of installation owners allowed to be used by this GitHub app. The GitHub UI does not provide a way to list the installations.\nHowever you can list the installations with the GitHub API. You can find the list of installations here:\nhttps://api.github.com/app/installations\nThe relevant documentation for this is here.\nhttps://docs.github.com/en/rest/reference/apps#list-installations-for-the-authenticated-app--code-samples",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "appId",
+                          "clientId",
+                          "clientSecret",
+                          "privateKey",
+                          "webhookSecret"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "gitlab": {
+                "description": "Integration configuration for GitLab",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The host of the target that this matches on, e.g. \"gitlab.com\".",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "apiBaseUrl": {
+                      "description": "The base URL of the API of this provider, e.g.\n\"https://gitlab.com/api/v4\", with no trailing slash.\n\nMay be omitted specifically for public GitLab; then it will be deduced.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "token": {
+                      "description": "The authorization token to use for requests to this provider.\n\nIf no token is specified, anonymous access is used.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "baseUrl": {
+                      "description": "The baseUrl of this provider, e.g. \"https://gitlab.com\", which is\npassed into the GitLab client.\n\nIf no baseUrl is provided, it will default to https://${host}.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              },
+              "googleGcs": {
+                "description": "Integration configuration for Google Cloud Storage",
+                "type": "object",
+                "properties": {
+                  "clientEmail": {
+                    "description": "Service account email used to authenticate requests.",
+                    "type": "string"
+                  },
+                  "privateKey": {
+                    "description": "Service account private key used to authenticate requests.",
+                    "visibility": "secret",
+                    "type": "string"
+                  }
+                }
+              },
+              "awsS3": {
+                "description": "Integration configuration for AWS S3 Service",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "endpoint": {
+                      "description": "AWS Endpoint.\nThe endpoint URI to send requests to. The default endpoint is built from the configured region.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "s3ForcePathStyle": {
+                      "description": "Whether to use path style URLs when communicating with S3.\nDefaults to false.\nThis allows providers like LocalStack, Minio and Wasabi (and possibly others) to be used.",
+                      "visibility": "frontend",
+                      "type": "boolean"
+                    },
+                    "accessKeyId": {
+                      "description": "Account access key used to authenticate requests.",
+                      "type": "string"
+                    },
+                    "secretAccessKey": {
+                      "description": "Account secret key used to authenticate requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "roleArn": {
+                      "description": "ARN of the role to be assumed",
+                      "type": "string"
+                    },
+                    "externalId": {
+                      "description": "External ID to use when assuming role",
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "gitea": {
+                "description": "Integration configuration for Gitea",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host": {
+                      "description": "The hostname of the given Gitea instance",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "baseUrl": {
+                      "description": "The base url for the Gitea instance.",
+                      "visibility": "frontend",
+                      "type": "string"
+                    },
+                    "username": {
+                      "description": "The username to use for authenticated requests.",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "password": {
+                      "description": "Gitea password used to authenticate requests. This can be either a password\nor a generated access token.",
+                      "visibility": "secret",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "host"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/backend-common/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "object",
+            "properties": {
+              "baseUrl": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "baseUrl"
+            ]
+          },
+          "backend": {
+            "type": "object",
+            "properties": {
+              "auth": {
+                "description": "Backend configuration for when request authentication is enabled",
+                "type": "object",
+                "properties": {
+                  "keys": {
+                    "description": "Keys shared by all backends for signing and validating backend tokens.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "secret": {
+                          "description": "Secret for generating tokens. Should be a base64 string, recommended\nlength is 24 bytes.",
+                          "visibility": "secret",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "secret"
+                      ]
+                    }
+                  }
+                }
+              },
+              "baseUrl": {
+                "type": "string"
+              },
+              "listen": {
+                "description": "Address that the backend should listen to.",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "host": {
+                        "description": "Address of the interface that the backend should bind to.",
+                        "type": "string"
+                      },
+                      "port": {
+                        "description": "Port that the backend should listen to.",
+                        "type": [
+                          "string",
+                          "number"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "https": {
+                "description": "HTTPS configuration for the backend. If omitted the backend will serve HTTP.\n\nSetting this to `true` will cause self-signed certificates to be generated, which\ncan be useful for local development or other non-production scenarios.",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "certificate": {
+                        "description": "Certificate configuration",
+                        "type": "object",
+                        "properties": {
+                          "cert": {
+                            "description": "PEM encoded certificate. Use $file to load in a file",
+                            "type": "string"
+                          },
+                          "key": {
+                            "description": "PEM encoded certificate key. Use $file to load in a file.",
+                            "visibility": "secret",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "cert",
+                          "key"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "const": true,
+                    "type": "boolean"
+                  }
+                ]
+              },
+              "database": {
+                "description": "Database connection configuration, select base database type using the `client` field",
+                "type": "object",
+                "properties": {
+                  "client": {
+                    "description": "Default database client to use",
+                    "enum": [
+                      "better-sqlite3",
+                      "pg",
+                      "sqlite3"
+                    ],
+                    "type": "string"
+                  },
+                  "connection": {
+                    "description": "Base database connection string, or object with individual connection properties",
+                    "visibility": "secret",
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "properties": {
+                          "password": {
+                            "description": "Password that belongs to the client User",
+                            "visibility": "secret",
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "prefix": {
+                    "description": "Database name prefix override",
+                    "type": "string"
+                  },
+                  "ensureExists": {
+                    "description": "Whether to ensure the given database exists by creating it if it does not.\nDefaults to true if unspecified.",
+                    "type": "boolean"
+                  },
+                  "pluginDivisionMode": {
+                    "description": "How plugins databases are managed/divided in the provided database instance.\n\n`database` -> Plugins are each given their own database to manage their schemas/tables.\n\n`schema` -> Plugins will be given their own schema (in the specified/default database)\n            to manage their tables.\n\nNOTE: Currently only supported by the `pg` client.",
+                    "default": "database",
+                    "enum": [
+                      "database",
+                      "schema"
+                    ],
+                    "type": "string"
+                  },
+                  "role": {
+                    "description": "Configures the ownership of newly created schemas in pg databases.",
+                    "type": "string"
+                  },
+                  "knexConfig": {
+                    "description": "Arbitrary config object to pass to knex when initializing\n(https://knexjs.org/#Installation-client). Most notable is the debug\nand asyncStackTraces booleans",
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true
+                  },
+                  "plugin": {
+                    "description": "Plugin specific database configuration and client override",
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "client": {
+                          "description": "Database client override",
+                          "enum": [
+                            "better-sqlite3",
+                            "pg",
+                            "sqlite3"
+                          ],
+                          "type": "string"
+                        },
+                        "connection": {
+                          "description": "Database connection string or Knex object override",
+                          "visibility": "secret",
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "ensureExists": {
+                          "description": "Whether to ensure the given database exists by creating it if it does not.\nDefaults to base config if unspecified.",
+                          "type": "boolean"
+                        },
+                        "knexConfig": {
+                          "description": "Arbitrary config object to pass to knex when initializing\n(https://knexjs.org/#Installation-client). Most notable is the\ndebug and asyncStackTraces booleans.\n\nThis is merged recursively into the base knexConfig",
+                          "type": "object",
+                          "properties": {},
+                          "additionalProperties": true
+                        },
+                        "role": {
+                          "description": "Configures the ownership of newly created schemas in pg databases.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "client",
+                  "connection"
+                ]
+              },
+              "cache": {
+                "description": "Cache connection configuration, select cache type using the `store` field",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "store": {
+                        "type": "string",
+                        "const": "memory"
+                      }
+                    },
+                    "required": [
+                      "store"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "store": {
+                        "type": "string",
+                        "const": "redis"
+                      },
+                      "connection": {
+                        "description": "A redis connection string in the form `redis://user:pass@host:port`.",
+                        "visibility": "secret",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "connection",
+                      "store"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "store": {
+                        "type": "string",
+                        "const": "memcache"
+                      },
+                      "connection": {
+                        "description": "A memcache connection string in the form `user:pass@host:port`.",
+                        "visibility": "secret",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "connection",
+                      "store"
+                    ]
+                  }
+                ]
+              },
+              "cors": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "methods": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "allowedHeaders": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "exposedHeaders": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "credentials": {
+                    "type": "boolean"
+                  },
+                  "maxAge": {
+                    "type": "number"
+                  },
+                  "preflightContinue": {
+                    "type": "boolean"
+                  },
+                  "optionsSuccessStatus": {
+                    "type": "number"
+                  }
+                }
+              },
+              "reading": {
+                "description": "Configuration related to URL reading, used for example for reading catalog info\nfiles, scaffolder templates, and techdocs content.",
+                "type": "object",
+                "properties": {
+                  "allow": {
+                    "description": "A list of targets to allow outgoing requests to. Users will be able to make\nrequests on behalf of the backend to the targets that are allowed by this list.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "host": {
+                          "description": "A host to allow outgoing requests to, being either a full host or\na subdomain wildcard pattern with a leading `*`. For example `example.com`\nand `*.example.com` are valid values, `prod.*.example.com` is not.\nThe host may also contain a port, for example `example.com:8080`.",
+                          "type": "string"
+                        },
+                        "paths": {
+                          "description": "An optional list of paths. In case they are present only targets matching\nany of them will are allowed. You can use trailing slashes to make sure only\nsubdirectories are allowed, for example `/mydir/` will allow targets with\npaths like `/mydir/a` but will block paths like `/mydir2`.",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "host"
+                      ]
+                    }
+                  }
+                }
+              },
+              "csp": {
+                "description": "Content Security Policy options.\n\nThe keys are the plain policy ID, e.g. \"upgrade-insecure-requests\". The\nvalues are on the format that the helmet library expects them, as an\narray of strings. There is also the special value false, which means to\nremove the default value that Backstage puts in place for that policy.",
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "const": false,
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "baseUrl",
+              "database",
+              "listen"
+            ]
+          }
+        },
+        "required": [
+          "app",
+          "backend"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/plugin-permission-common/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "permission": {
+            "description": "Configuration options for Backstage permissions and authorization",
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "description": "Whether authorization is enabled in Backstage. Defaults to false, which means authorization\nrequests will be automatically allowed without invoking the authorization policy.",
+                "visibility": "frontend",
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/backend-app-api/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "discovery": {
+            "description": "Discovery options.",
+            "type": "object",
+            "properties": {
+              "endpoints": {
+                "description": "Endpoints\n\nA list of target baseUrls and the associated plugins.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "description": "The target baseUrl to use for the plugin\n\nCan be either a string or an object with internal and external keys.\nTargets with `{{pluginId}}` or `{{ pluginId }} in the url will be replaced with the pluginId.",
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "internal": {
+                              "type": "string"
+                            },
+                            "external": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "external",
+                            "internal"
+                          ]
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "plugins": {
+                      "description": "Array of plugins which use the target baseUrl.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "plugins",
+                    "target"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "endpoints"
+            ]
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "path": "../../node_modules/@backstage/integration-aws-node/config.d.ts",
+      "value": {
+        "type": "object",
+        "properties": {
+          "aws": {
+            "description": "Configuration for access to AWS accounts",
+            "type": "object",
+            "properties": {
+              "accountDefaults": {
+                "description": "Defaults for retrieving AWS account credentials",
+                "type": "object",
+                "properties": {
+                  "roleName": {
+                    "description": "The IAM role to assume to retrieve temporary AWS credentials",
+                    "type": "string"
+                  },
+                  "partition": {
+                    "description": "The AWS partition of the IAM role, e.g. \"aws\", \"aws-cn\"",
+                    "type": "string"
+                  },
+                  "region": {
+                    "description": "The STS regional endpoint to use when retrieving temporary AWS credentials, e.g. \"ap-northeast-1\"",
+                    "type": "string"
+                  },
+                  "externalId": {
+                    "description": "The unique identifier needed to assume the role to retrieve temporary AWS credentials",
+                    "visibility": "secret",
+                    "type": "string"
+                  }
+                }
+              },
+              "mainAccount": {
+                "description": "Main account to use for retrieving AWS account credentials",
+                "type": "object",
+                "properties": {
+                  "accessKeyId": {
+                    "description": "The access key ID for a set of static AWS credentials",
+                    "visibility": "secret",
+                    "type": "string"
+                  },
+                  "secretAccessKey": {
+                    "description": "The secret access key for a set of static AWS credentials",
+                    "visibility": "secret",
+                    "type": "string"
+                  },
+                  "profile": {
+                    "description": "The configuration profile from a credentials file at ~/.aws/credentials and\na configuration file at ~/.aws/config.",
+                    "type": "string"
+                  },
+                  "region": {
+                    "description": "The STS regional endpoint to use for the main account, e.g. \"ap-northeast-1\"",
+                    "type": "string"
+                  }
+                }
+              },
+              "accounts": {
+                "description": "Configuration for retrieving AWS accounts credentials",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "accountId": {
+                      "description": "The account ID of the target account that this matches on, e.g. \"123456789012\"",
+                      "type": "string"
+                    },
+                    "accessKeyId": {
+                      "description": "The access key ID for a set of static AWS credentials",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "secretAccessKey": {
+                      "description": "The secret access key for a set of static AWS credentials",
+                      "visibility": "secret",
+                      "type": "string"
+                    },
+                    "profile": {
+                      "description": "The configuration profile from a credentials file at ~/.aws/credentials and\na configuration file at ~/.aws/config.",
+                      "type": "string"
+                    },
+                    "roleName": {
+                      "description": "The IAM role to assume to retrieve temporary AWS credentials",
+                      "type": "string"
+                    },
+                    "partition": {
+                      "description": "The AWS partition of the IAM role, e.g. \"aws\", \"aws-cn\"",
+                      "type": "string"
+                    },
+                    "region": {
+                      "description": "The STS regional endpoint to use when retrieving temporary AWS credentials, e.g. \"ap-northeast-1\"",
+                      "type": "string"
+                    },
+                    "externalId": {
+                      "description": "The unique identifier needed to assume the role to retrieve temporary AWS credentials",
+                      "visibility": "secret",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "accountId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  ],
+  "backstageConfigSchemaVersion": 1
+}
