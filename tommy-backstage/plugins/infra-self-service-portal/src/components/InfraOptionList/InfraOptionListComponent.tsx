@@ -40,8 +40,8 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
   ];
 
   const handleCreateService = (name: string) => {
-    <DetailInputModal />
-    return name;
+    console.log('create service', name)
+    return <DetailInputModal />
   }
 
   const data = services.map(service => {

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-interface FormData {
-  name: string;
-  region: string;
-  account: string;
-}
+export const DetailInputModal = () => {
+  interface FormData {
+    name: string;
+    region: string;
+    account: string;
+  }
 
-export const DetailInputModal: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     region: '',
@@ -40,14 +40,11 @@ export const DetailInputModal: React.FC = () => {
 
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
-
       <Modal
-        isOpen={isModalOpen}
+        isOpen={true}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <h2>Popup Content</h2>
         <form>
           <div>
             <label>Name:</label>
