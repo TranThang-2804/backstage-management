@@ -1,16 +1,16 @@
 version: "3.9"
 services:
-  # backstage-backend:
-  #   image: backstage-backend
-  #   build: ./packages/backend
-  #   container_name: backstage-backend
-  #   ports:
-  #     - "7007:7007"
-  #   depends_on:
-  #     - postgresql
-  #   networks:
-  #     backstage:
-  #   restart: always
+  selfservice-backend:
+    image: selfservice-backend
+    build: ./self-service-backend
+    container_name: selfservice-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+    networks:
+      backstage:
+    restart: always
 
   postgresql:
     image: postgres:15.3
