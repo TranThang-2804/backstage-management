@@ -1,0 +1,21 @@
+{ 
+  "EnvironmentName": "one-fms-appmesh-poc",
+  "MicroserviceName": "appmesh-service-1",
+  "Namespace": "appmesh-poc.local",
+  "NameSpaceID": "ns-z3dxpj3l2x6wwzra",
+  "ClusterName": "one-fms-ecs-cluster-appmesh-poc-001",
+  "ECSserviceName": "one-fms-int-sit-appmesh-poc-001", 
+  "TaskDefFamily": "one-fms-int-sit-taskdef-appmesh-poc-001",
+  "TaskRoleArn": "arn:aws:iam::847773763831:role/poc-fms-execution-role-001",
+  "ExecutionRoleArn": "arn:aws:iam::847773763831:role/poc-fms-execution-role-001",
+  "ContainerSecurityGroup": "sg-0f7b9a74cb2dfed46",
+  "ListPrivateSubnet": "subnet-09565875fae2fa8a7,subnet-0dfa25abc3cd078b1",
+  "Protocol": "http",
+  "Port": 8080,
+  "PercentageStep": 50,
+  "WaitTime": 60,
+  "FailureThresholdValue": 1,
+  "FailureThresholdTime": 600,
+  "Sha": "<SHA>",
+  "ContainerImage": "<IMAGE>:<TAG>"
+}

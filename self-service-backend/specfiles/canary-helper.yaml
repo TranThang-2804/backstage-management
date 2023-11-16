@@ -1,0 +1,216 @@
+---
+Parameters:
+
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+
+  ClusterName:
+    Description: A cluster name that will deploy the service
+    Type: String
+
+  MicroserviceName:
+    Description: Provide the name of the Microservice
+    Type: String
+
+  ECSserviceName:
+    Description: Provide the name of the ECS Service
+    Type: String
+
+  Namespace:
+    Description: Provide the details of CloudMap Namespace
+    Type: String
+  
+  TaskDefFamily:
+    Type: String
+
+  TaskRoleArn:
+    Type: String
+
+  ExecutionRoleArn:
+    Type: String
+
+  ContainerSecurityGroup:
+    Type: String
+    Description: Security group for application
+
+  ListPrivateSubnet:
+    Type: String
+    Description: List private Subnet 
+
+  Sha:
+    Description: Provide the head of the GitHub Sha 
+    Type: String
+
+  ContainerImage:
+    Description: Provide the details of ContainerImage URI
+    Type: String
+
+  Port:
+    Description: The port on which the Microservice listens on
+    Type: Number
+
+  Protocol:
+    Description: The protocol supported by the port on which the Microservice listens on
+    Type: String
+
+  NameSpaceID:
+    Description: The id of the namespace
+    Type: String
+
+Resources:
+
+  ServiceDiscoveryRecord:
+    Type: 'AWS::ServiceDiscovery::Service'
+    Properties:
+      Name: !Sub ${MicroserviceName}-${Sha}
+      DnsConfig:
+        NamespaceId: !Ref NameSpaceID
+        DnsRecords:
+          - Type: A
+            TTL: 60
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+
+  ECSService:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      Cluster: !Ref ClusterName
+      ServiceName: !Sub ${ECSserviceName}-${Sha}
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
+      LaunchType: 'FARGATE'
+      ServiceRegistries:
+        - RegistryArn:
+            'Fn::GetAtt': ServiceDiscoveryRecord.Arn
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref ContainerSecurityGroup
+          Subnets: !Split [ "," , !Ref ListPrivateSubnet ]
+
+      TaskDefinition: { Ref: TaskDef }
+
+  TaskDef:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      RequiresCompatibilities:
+        - 'FARGATE'
+      Family: !Ref TaskDefFamily
+      NetworkMode: 'awsvpc'
+      Cpu: 512
+      Memory: 1024
+      TaskRoleArn: !Ref TaskRoleArn
+      ExecutionRoleArn: !Ref ExecutionRoleArn
+      ProxyConfiguration:
+        Type: 'APPMESH'
+        ContainerName: 'envoy'
+        ProxyConfigurationProperties:
+          - Name: 'IgnoredUID'
+            Value: '1337'
+          - Name: 'ProxyIngressPort'
+            Value: '15000'
+          - Name: 'ProxyEgressPort'
+            Value: '15001'
+          - Name: 'AppPorts'
+            Value: !Ref Port
+          - Name: 'EgressIgnoredIPs'
+            Value: '169.254.170.2,169.254.169.254'
+      ContainerDefinitions:
+        - Name: 'one-fms-int-sit-container-pc-001'
+          Image: !Ref ContainerImage
+          Essential: true
+          DependsOn:
+            - ContainerName: 'envoy'
+              Condition: 'HEALTHY'
+          Environment:
+            - Name: SEARCH_DOMAIN
+              Value: !Ref Namespace
+            - Name: OTEL_EXPORTER_OTLP_ENDPOINT
+              Value: http://localhost:4317
+            - Name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+              Value: http://localhost:4317
+            - Name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+              Value: http://localhost:4317
+            - Name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              Value: http://localhost:4317
+            - Name: OTEL_LOGS_EXPORTER
+              Value: otlp
+            - Name: OTEL_METRICS_EXPORTER
+              Value: otlp
+            - Name: OTEL_TRACES_EXPORTER
+              Value: otlp
+          PortMappings:
+            - ContainerPort: !Ref Port
+              Protocol: 'tcp'
+        - Name: envoy
+          Image: !Sub '840364872350.dkr.ecr.${AWS::Region}.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod'
+          Essential: true
+          User: '1337'
+          Ulimits:
+            - Name: "nofile"
+              HardLimit: 15000
+              SoftLimit: 15000
+          PortMappings:
+            - ContainerPort: 9901
+              Protocol: 'tcp'
+            - ContainerPort: 15000
+              Protocol: 'tcp'
+            - ContainerPort: 15001
+              Protocol: 'tcp'
+          HealthCheck:
+            Command:
+              - 'CMD-SHELL'
+              - 'curl -s http://localhost:9901/server_info | grep state | grep -q LIVE'
+            Interval: 5
+            Timeout: 2
+            Retries: 3
+          Environment:
+            - Name: 'APPMESH_VIRTUAL_NODE_NAME'
+              Value: !Sub 'mesh/${EnvironmentName}/virtualNode/${MicroserviceName}-${Sha}'
+        - Name: 'opentelemetry-collector'
+          Image: '350155334257.dkr.ecr.ap-southeast-1.amazonaws.com/custom-opentelemetry-collector:latest'
+          Essential: true
+          DependsOn:
+            - ContainerName: 'envoy'
+              Condition: 'HEALTHY'
+          PortMappings:
+            - ContainerPort: 4317
+              Protocol: 'tcp'
+          Command:
+            - "--config=/etc/ecs/ecs-custom-config.yaml"
+
+  VirtualNode:
+    Type: AWS::AppMesh::VirtualNode
+    Properties:
+      MeshName: !Ref EnvironmentName
+      VirtualNodeName: !Sub ${MicroserviceName}-${Sha}
+      Spec:
+        Listeners:
+          - PortMapping:
+              Port: !Ref Port
+              Protocol: !Ref Protocol
+            HealthCheck:
+              Protocol: !Ref Protocol
+              Path: "/"
+              Port: !Ref Port
+              HealthyThreshold: 2
+              UnhealthyThreshold: 2
+              TimeoutMillis: 2000
+              IntervalMillis: 5000
+        Logging:
+            AccessLog:
+              File:
+                Path: '/dev/stdout'
+        ServiceDiscovery:
+          AWSCloudMap:
+            NamespaceName: !Ref Namespace
+            ServiceName: !Sub ${MicroserviceName}-${Sha}
+        Backends:
+          - VirtualService:
+              VirtualServiceName: aps-workspaces.ap-southeast-1.amazonaws.com
+          - VirtualService:
+              VirtualServiceName: log-archive-ase1-alb-001-123561732.ap-southeast-1.elb.amazonaws.com

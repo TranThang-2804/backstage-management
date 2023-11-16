@@ -1,0 +1,47 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - SHA=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
+      - echo Connecting to Amazon ECR...
+      - ECR_URI=350155334257.dkr.ecr.ap-southeast-1.amazonaws.com
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_URI
+      - REPOSITORY_URI=$ECR_URI/one-fms-int-sit-ecr-poc-001
+      - IMAGE_TAG=$(echo build_$(echo `date -d '+7 hours' +%F`)_$(echo `date -d '+7 hours' +%T`) | awk ' { gsub (":", ".")} 1 ')
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - mvn package
+      - docker build --platform linux/amd64 -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - sed -i "s|<IMAGE>|$REPOSITORY_URI|g" specfiles/deploy.json
+      - sed -i "s|<TAG>|$IMAGE_TAG|g" specfiles/deploy.json
+      - sed -i "s|<SHA>|$SHA|g" specfiles/deploy.json
+      - cat specfiles/deploy.json | jq --arg CONFIG_FILE "$(base64 specfiles/canary-helper.yaml)" '. + {"CanaryTemplate":$CONFIG_FILE}' > tmp.json && mv tmp.json specfiles/deploy.json
+      - cat specfiles/deploy.json
+
+reports:
+  jacoco-report:
+    files:
+    - '**/*'
+    base-directory: 'target/surefire-reports'
+
+cache:
+  paths:
+  - '/root/.m2/**/*'
+
+artifacts:
+  files:
+    - specfiles/deploy.json
+  discard-paths: yes
