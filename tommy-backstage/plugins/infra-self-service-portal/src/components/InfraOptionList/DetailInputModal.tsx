@@ -55,6 +55,7 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
     // Handle form submission with formData
     console.log('Form submitted with data:', formData);
     // You can add your logic to handle the form data, for example, making an API call.
+
     closeModal(); // Close the modal after submission
   };
 
@@ -68,7 +69,6 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
 
   const handleCreateService = () => {
     openModal();
-    return "hi";
   }
 
   const data = services.map(service => {
@@ -123,7 +123,8 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
                     name="region"
                     value={formData.region}
                     onChange={handleInputChange}
-                    required
+                    // required
+                    defaultValue="ap-southeast-1"
                     fullWidth
                     margin="normal"
                   />
@@ -134,8 +135,9 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
                     name="account"
                     value={formData.account}
                     onChange={handleInputChange}
-                    required
+                    // required
                     fullWidth
+                    defaultValue="testAccount"
                     margin="normal"
                   />
 
