@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
+import Modal from '@material-ui/core/Modal';
+import { TextField, Button, Box } from '@material-ui/core';
 
 export const DetailInputModal = () => {
   interface FormData {
@@ -38,48 +40,68 @@ export const DetailInputModal = () => {
     closeModal(); // Close the modal after submission
   };
 
-  console.log('hi')
   return (
-    <div>
-      <Modal
-        isOpen={true}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-      >
-        <form>
+    <Box>
+      <Modal open={isModalOpen} onClose={closeModal}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'white', padding: '20px' }}>
           <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Name"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                fullWidth
+                margin="normal"
+              />
+
+              <TextField
+                label="Region"
+                type="text"
+                name="region"
+                value={formData.region}
+                onChange={handleInputChange}
+                required
+                fullWidth
+                margin="normal"
+              />
+
+              <TextField
+                label="Account"
+                type="text"
+                name="account"
+                value={formData.account}
+                onChange={handleInputChange}
+                required
+                fullWidth
+                margin="normal"
+              />
+
+              <Button
+                type="submit"
+                variant="contained"
+                style={{
+                  display: "block",
+                  margin: "0 auto",
+                  maxWidth: "200px",
+                  background: "#2196F3", // Change this to your preferred color
+                  color: "#fff", // Change this to your preferred text color
+                  borderRadius: "8px", // Adjust the value as per your preference
+                  padding: "12px 24px", // Adjust the values to change the padding
+                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)", // Add a subtle box-shadow for a nice effect
+                  fontWeight: "bold", // Increase the font weight for emphasis
+                  fontSize: "16px", // Change the font size as needed
+                  cursor: "pointer", // Show a pointer cursor on hover
+                }}
+              >
+                Confirm
+              </Button>
+            </form>
           </div>
-          <div>
-            <label>Region:</label>
-            <input
-              type="text"
-              name="region"
-              value={formData.region}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label>Account:</label>
-            <input
-              type="text"
-              name="account"
-              value={formData.account}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button type="button" onClick={handleSubmit}>
-            Submit
-          </button>
-        </form>
-        <button onClick={closeModal}>Close Modal</button>
+        </div>
       </Modal>
-    </div>
+    </Box>
   );
 };

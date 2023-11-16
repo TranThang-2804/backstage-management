@@ -17,7 +17,6 @@ const useStyles = makeStyles({
   avatar: {
     height: 42,
     width: 42,
-    borderRadius: '50%',
   },
 });
 
@@ -39,8 +38,7 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
     { title: '', field: 'button' },
   ];
 
-  const handleCreateService = (name: string) => {
-    console.log('create service', name)
+  const handleCreateService = () => {
     return <DetailInputModal />
   }
 
