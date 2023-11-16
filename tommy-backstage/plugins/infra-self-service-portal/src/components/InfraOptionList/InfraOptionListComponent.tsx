@@ -1,8 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableColumn, Progress, ResponseErrorPanel } from '@backstage/core-components';
-import { DetailInputModal } from './DetailInputModal';
+import { Progress, ResponseErrorPanel } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
+import { DenseTable, Service } from './DetailInputModal';
 
 export const serviceList = {
   "results": [
@@ -12,68 +11,6 @@ export const serviceList = {
     }
   ]
 }
-
-const useStyles = makeStyles({
-  avatar: {
-    height: 42,
-    width: 42,
-  },
-});
-
-type Service = {
-  name: string;
-  picture: string;
-};
-
-type DenseTableProps = {
-  services: Service[];
-};
-
-export const DenseTable = ({ services: services }: DenseTableProps) => {
-  const classes = useStyles();
-
-  const columns: TableColumn[] = [
-    { title: 'icon', field: 'image' },
-    { title: 'Name', field: 'name' },
-    { title: '', field: 'button' },
-  ];
-
-  const handleCreateService = () => {
-    return <DetailInputModal />
-  }
-
-  const data = services.map(service => {
-    return {
-      image: (
-        <img
-          src={service.picture}
-          className={classes.avatar}
-          alt={service.name}
-        />
-      ),
-      name: `${service.name}`,
-      button:
-        <button
-          type="submit"
-          // color="orangeFake"
-          // variant="contained"
-          onClick={() => { handleCreateService(service.name) }}
-        // fullWidth
-        >
-          Create
-        </button>
-    };
-  });
-
-  return (
-    <Table
-      title="Infra Service List"
-      options={{ search: false, paging: false }}
-      columns={columns}
-      data={data}
-    />
-  );
-};
 
 export const InfraOptionList = () => {
 
