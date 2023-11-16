@@ -3,6 +3,7 @@ import Modal from '@material-ui/core/Modal';
 import { TextField, Button, Box } from '@material-ui/core';
 import { Table, TableColumn } from '@backstage/core-components';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   avatar: {
@@ -44,7 +45,6 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("bloe")
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -52,10 +52,20 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
   };
 
   const handleSubmit = () => {
-    // Handle form submission with formData
-    console.log('Form submitted with data:', formData);
-    // You can add your logic to handle the form data, for example, making an API call.
-
+    const data = {
+      type: 's3',
+      keyName: formData.name,
+      params: formData,
+    }
+    console.log('Form submitted with data:', data);
+    // Make the API request to create a new file
+    axios.post('http://localhost:7007/api/infrass/createinfra', data)
+      .then((response) => {
+        console.log('File added successfully:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error adding file:', error.response ? error.response.data : error.message);
+      });
     closeModal(); // Close the modal after submission
   };
 
@@ -144,6 +154,7 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
                   <Button
                     type="submit"
                     variant="contained"
+                    onClick={() => handleSubmit()}
                     style={{
                       display: "block",
                       margin: "0 auto",
@@ -164,7 +175,7 @@ export const DenseTable = ({ services: services }: DenseTableProps) => {
               </div>
             </div>
           </Modal>
-        </Box>
+        </Box >
     };
   });
 
