@@ -1,4 +1,4 @@
-export const s3 = (params: s3) => {
+export const s3 = (params: JSON) => {
   const { name } = params;
 
   return `
