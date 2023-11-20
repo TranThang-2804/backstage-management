@@ -3,7 +3,7 @@
 Please first of all, read through my presentation slides to understand what I'm trying to build to support self-service for IaC with Backstage which is highly
 recomended.
 
-## Who am I
+## Who am I?
 Hi, I'm ```Tommy```, I'm a ```team lead``` for the platform team, with many experiences with developing landing zone infrastructure platform that utilizes the ideology of ```self-service.``` I have successfully designed and implemented multiple of projects with this approach already, so I can foresee problems,
 obstacles, and how to overcome them when building that type of platform. I confidently say that I'm quite an expert on this field.
 
