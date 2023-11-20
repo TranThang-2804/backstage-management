@@ -19,7 +19,7 @@ const githubCreatePR = async (content: String) => {
 
   // Create the request payload
   const data = {
-    message: 'Add a new file',
+    message: 'Added resource file by backstage',
     content: contentBase64,
     branch: branch,
   };
