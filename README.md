@@ -17,6 +17,8 @@ DevOps team, the configuration for resources will be abstracted and only allows 
 
 This will result in faster development process, less stress on our DevOps/Platform team -> Everyone is happy :D
 
+![Overview Diagram](./images/Overview_Diagram.png)
+
 ## Explaination
 This solution will spans across 2 repositories: 
 1. This repository:<br>
