@@ -5,7 +5,7 @@ export const genFile = (type: String, params: JSON, keyName: String) => {
   let iacTemplate: String = '';
   switch (type) {
     case 's3':
-      iacTemplate = template.s3(params);
+      iacTemplate = template.s3(params, keyName);
       break;
     default:
       console.log('No template found for ${type}');

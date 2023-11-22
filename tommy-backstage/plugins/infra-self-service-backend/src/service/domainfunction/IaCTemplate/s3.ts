@@ -1,8 +1,8 @@
-export const s3 = (params: JSON) => {
+export const s3 = (params: JSON, keyName: String) => {
   const { name } = params;
 
   return `
-s3:
+${keyName}:
   name: "${name}"
   versioning: 
     enabled: true 
