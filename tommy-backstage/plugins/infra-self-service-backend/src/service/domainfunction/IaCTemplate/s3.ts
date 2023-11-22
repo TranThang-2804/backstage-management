@@ -4,6 +4,7 @@ export const s3 = (params: JSON) => {
   return `
 s3:
   name: "${name}"
-  versioning: true 
+  versioning: 
+    enabled: true 
 `;
 }
